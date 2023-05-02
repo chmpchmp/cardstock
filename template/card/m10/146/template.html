@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- meta tags -->
+        <meta charset="utf-8">
+        
+        <title>Lightning Bolt - Magic 2010 | Cardstock</title>
+        <link rel="icon" type="image/png" href="../../../favicon.png">
+
+        <!-- bootstrap css -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- chart -->     
+        <script>
+            const data = {
+                labels: [],
+                datasets: [{
+                    backgroundColor: 'rgb(131, 180, 252)',
+                    borderColor: 'rgb(131, 180, 252)',
+                    data: [],
+                    borderWidth: 5
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    tension: 0.5,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        point: {
+                            pointRadius: 0
+                        }
+                    }
+                }
+            };
+
+            async function getJSON(path) {
+                const response = await fetch(path);
+                const output = response.json();
+                return output;
+            }
+
+            getJSON('../../../AllPrintings.json')
+                .then(output => {
+                    const uuid = output.data["M10"].cards[146-1].uuid;
+
+                    getJSON('../../../AllPrices/' + uuid + '.json')
+                        .then(output => {
+                            const prices = output.paper.tcgplayer.retail.normal;
+
+                            var dataset = [];
+                            var labels = [];
+                            var count = 0;
+
+                            for (var key in prices) {
+                                labels.push(key);
+                                dataset.push(prices[key]);
+                            }
+
+                            largeChart.config.data.labels = labels;
+                            largeChart.config.data.datasets[0].data = dataset;
+                            largeChart.update();
+
+                            mediumChart.config.data.labels = labels;
+                            mediumChart.config.data.datasets[0].data = dataset;
+                            mediumChart.update();
+                        })
+                })
+        </script>
+
+        <!-- font -->
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <!-- navbar -->
+        <nav class="navbar navbar-dark navbar-expand-md bg-dark">
+            <div class="container">
+                <!-- title -->
+                <span class="navbar-brand mb-0 h1">Cardstock</span>
+
+                <!-- collapsible button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <!-- navbar links -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="../../../index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" onclick="random()">Random Card</a>
+                        </li>
+
+                        <script src="../../../random.js"></script>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- page content -->
+            <!-- 3 column -->
+            <div class="container py-4 d-none d-md-block">
+                <div class="row px-3">
+                    <div class="col-4">
+                        <h2>Lightning Bolt</h2>
+                    </div>
+                    <div class="col-8">
+
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <div class="col-4" style="color:gray">
+                        Magic 2010
+                    </div>
+                    <div class="col-8">
+                        <h4>Price History</h4>
+                    </div>
+                </div>
+                <div class="row px-3 py-3">
+                    <div class="col-3">
+                        <img src="https://c1.scryfall.com/file/scryfall-cards/large/front/4/3/435589bb-27c6-4a6d-9d63-394d5092b9d8.jpg?1561978182" class="img-fluid">
+                    </div>
+                    <div class="col-1">
+
+                    </div>
+                    <div class="col-8">
+                        <!-- chart -->
+                        <div>
+                            <canvas id="largeChart"></canvas>
+                        </div>
+                
+                        <script>
+                            const largeChart = new Chart(document.getElementById('largeChart'), config);
+                        </script>
+                    </div>
+                </div>
+                <div class="row py-5">
+                    <div class="col-5">
+                        <h4>Alternate Printings</h4>
+                        <style>
+                            .list-group {
+                                max-height: 450px;
+                                overflow-y: scroll;
+                                -webkit-overflow-scrolling: touch;
+                            }
+                        </style>
+                        <ul class="list-group">
+                            <li class="list-group-item"><a href="../../2x2/361/lightning-bolt.html" class="link-primary">Double Masters 2022 #361</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-1">
+
+                    </div>
+                    <div class="col-5">
+                        <h4>Purchase</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="https://www.tcgplayer.com/product/32656" class="link-primary">TCGplayer</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="https://www.cardmarket.com/en/Magic/Products/Search?searchString=Lightning+Bolt" class="link-primary">Cardmarket</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-1">
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- one column -->
+            <div class="container py-3 d-md-none">
+                <div class="row py-3 px-3">
+                    <div class="col-6">
+                        <h2>Lightning Bolt</h2>
+                        <p style="color:gray">Magic 2010</p>
+                    </div>
+                    <div class="col-6">
+                        <img src="https://c1.scryfall.com/file/scryfall-cards/large/front/4/3/435589bb-27c6-4a6d-9d63-394d5092b9d8.jpg?1561978182" class="img-fluid">
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <h4>Price History</h4>
+
+                    <!-- chart -->
+                    <div>
+                        <canvas id="mediumChart"></canvas>
+                    </div>
+            
+                    <script>
+                        const mediumChart = new Chart(document.getElementById('mediumChart'), config);
+                    </script>
+                </div>
+                <div class="row py-3">
+                    <h4>Alternate Printings</h4>
+                    <style>
+                        .list-group {
+                            max-height: 450px;
+                            overflow-y: scroll;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                    </style>
+                    <ul class="list-group force-overflow">
+                        <li class="list-group-item"><a href="../../2x2/361/lightning-bolt.html" class="link-primary">Double Masters 2022 #361</a></li>
+                    </ul>
+                </div>
+                <div class="row py-3">
+                    <h4>Purchase</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="https://www.tcgplayer.com/product/32656" class="link-primary">TCGplayer</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="https://www.cardmarket.com/en/Magic/Products/Search?searchString=Lightning+Bolt" class="link-primary">Cardmarket</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </body>
+</html>
